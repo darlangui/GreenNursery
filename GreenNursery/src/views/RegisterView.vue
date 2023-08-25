@@ -3,8 +3,9 @@ import LoginHeader from "@/components/LoginHeader.vue";
 import Footer from "@/components/Footer.vue";
 import CustomInput from '@/components/icons/Input.vue';
 import CustomButton from '@/components/icons/ButtonCustom.vue';
-
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+
 const name = ref('');
 const password = ref('');
 const email = ref('');
@@ -12,6 +13,12 @@ const email = ref('');
 const handleButtonClick = () => {
   console.log('Botão clicado!');
 };
+
+const router = useRouter();
+const LoginPage = () => {
+  router.push('/login');
+}
+
 </script>
 
 <template>
@@ -45,7 +52,7 @@ const handleButtonClick = () => {
           <template #description>
             Já possui uma conta?
           </template>
-          <template #bold> Fazer Login</template>
+          <template #bold><span @click="LoginPage">Fazer Login</span></template>
         </CustomButton>
       </div>
     </div>

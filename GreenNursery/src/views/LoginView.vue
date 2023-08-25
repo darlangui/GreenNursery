@@ -8,9 +8,17 @@ import { ref } from 'vue';
 const password = ref('');
 const email = ref('');
 
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const handleButtonClick = () => {
   console.log('Botão clicado!');
 };
+
+const RegisterPage = () => {
+  router.push('/register');
+}
+
 </script>
 
 <template>
@@ -38,7 +46,7 @@ const handleButtonClick = () => {
           <template #description>
             Não possui uma conta?
           </template>
-          <template #bold> Cadastrar-se</template>
+          <template #bold><span @click="RegisterPage">Cadastrar-se</span> </template>
         </CustomButton>
       </div>
     </div>

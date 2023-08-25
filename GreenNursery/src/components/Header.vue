@@ -1,10 +1,17 @@
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const handleButtonClick = () => {
+  router.push('/');
+}
+
 </script>
 
 <template>
   <header>
       <div class="logo">
-        <h1>GreenNursery</h1>
+        <h1 @click="handleButtonClick">GreenNursery</h1>
       </div>
     <div class="menu">
       <img src="/icons/shop.svg" alt="Shop Icon"/>
@@ -31,6 +38,8 @@
   .logo {
     font-size: 12px;
     font-weight: bold;
+
+    cursor: pointer;
   }
 
   .menu {
