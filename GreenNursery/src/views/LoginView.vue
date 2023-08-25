@@ -2,10 +2,15 @@
 import LoginHeader from "@/components/LoginHeader.vue";
 import Footer from "@/components/Footer.vue";
 import CustomInput from '@/components/icons/Input.vue';
+import CustomButton from '@/components/icons/ButtonCustom.vue';
 
 import { ref } from 'vue';
 const password = ref('');
 const email = ref('');
+
+const handleButtonClick = () => {
+  console.log('Botão clicado!');
+};
 </script>
 
 <template>
@@ -26,6 +31,15 @@ const email = ref('');
             v-model="password"
             type="password"
         />
+        <CustomButton @click="handleButtonClick">
+          <template #button>
+            Entrar
+          </template>
+          <template #description>
+            Não possui uma conta?
+          </template>
+          <template #bold> Cadastrar-se</template>
+        </CustomButton>
       </div>
     </div>
   </main>
