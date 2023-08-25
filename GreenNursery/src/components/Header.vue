@@ -25,7 +25,7 @@
 
     padding: 0 100px;
 
-    border: 1px solid #E1E3E5;
+    border-bottom: 1px solid #E1E3E5;
   }
 
   .logo {

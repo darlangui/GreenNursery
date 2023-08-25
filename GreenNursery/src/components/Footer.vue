@@ -25,6 +25,8 @@
     width: 100%;
 
     color: #FFFFFF;
+
+    margin-top: 104px;
   }
 
   .logo {
