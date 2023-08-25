@@ -1,0 +1,143 @@
+<script setup>
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import CartItem from "@/components/icons/CartItem.vue";
+import ButtonCustom from "@/components/icons/ButtonCustom.vue";
+</script>
+
+<template>
+  <Header/>
+  <main>
+    <div class="main">
+      <section class="right">
+        <div class="goback">
+          <img src="/icons/arrowleft.svg" alt="Arrow Left"/> <span>Voltar para o início</span>
+        </div>
+        <h2>Sua lista de compras</h2>
+        <CartItem>
+          <template #image><img src="/image/plant1.svg" alt="Image Plant"></template>
+          <template #name>Integer vitae justo</template>
+          <template #mount>1</template>
+          <template #value>0,00</template>
+        </CartItem>
+      </section>
+      <section class="left">
+        <div class="left-cart">
+          <div class="itens">
+            <span>Itens:</span>
+            <span>3 itens</span>
+          </div>
+          <div class="total">
+            <p>Total</p>
+            <span>R$ 0,00</span>
+          </div>
+          <ButtonCustom>
+           <template #button>Ir para o Pagamento</template>
+          </ButtonCustom>
+        </div>
+      </section>
+    </div>
+  </main>
+  <Footer/>
+</template>
+
+<style scoped>
+  main {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .main {
+    width: 1112px;
+    height: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 48px;
+  }
+
+  .right {
+    width: 536px;
+    height: 100%;
+  }
+
+  .right h2{
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+
+  .goback {
+    height: 32px;
+    max-width: 1112px;
+
+    font-size: 16px;
+
+    display: flex;
+    align-items: center;
+
+    cursor: pointer;
+
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .goback img {
+    max-width: 32px;
+    max-height: 32px;
+  }
+
+  .image img{
+    max-width: 124px;
+    max-height: 124px;
+  }
+
+  .left {
+    width: 100%;
+    height: 536px;
+
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+
+  .left-cart {
+    width: 248px;
+    height: 155px;
+  }
+
+  .left .itens {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .left .itens span {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .left .total {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .left .total p{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .left .total span {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+</style>
