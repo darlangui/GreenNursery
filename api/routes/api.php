@@ -17,11 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/category', [\App\Http\Controllers\CategoryController::class, 'index']);
 Route::get('/plant', [\App\Http\Controllers\PlantController::class, 'index']);
+Route::get('/plant/{id}', [\App\Http\Controllers\PlantController::class, 'show']);
+Route::get('/category/{id}', [\App\Http\Controllers\CategoryController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/client', [\App\Http\Controllers\ClientController::class, 'store']);
+Route::post('/loginClient', [\App\Http\Controllers\ClientController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('/category', \App\Http\Controllers\CategoryController::class)->except(['index']);
-    Route::apiResource('/plant', \App\Http\Controllers\PlantController::class)->except(['index']);
-    Route::apiResource('/user', \App\Http\Controllers\UserController::class);
+    Route::apiResource('/category', \App\Http\Controllers\CategoryController::class)->except(['index', 'show']);
+    Route::apiResource('/plant', \App\Http\Controllers\PlantController::class)->except(['index', 'show']);
+    Route::apiResource('/user', \App\Http\Controllers\UserController::class)->except(['store']);
+    Route::apiResource('/client', \App\Http\Controllers\ClientController::class)->except(['store', 'login']);
 });
