@@ -5,20 +5,42 @@ import CustomInput from '@/components/icons/Input.vue';
 import CustomButton from '@/components/icons/ButtonCustom.vue';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import {registerClient} from "@/services/clientService";
 
 const name = ref('');
 const password = ref('');
 const email = ref('');
 
-const handleButtonClick = () => {
-  console.log('Botão clicado!');
+const router = useRouter();
+const isRequestPending = ref(false);
+
+const registerUser = async () => {
+  if (isRequestPending.value) {
+    return;
+  }
+
+  isRequestPending.value = true;
+  try {
+    await registerClient(name.value, email.value, password.value);
+    await router.push('/login');
+  } catch (error) {
+    console.error('Erro ao registrar cliente:', error);
+  } finally {
+    isRequestPending.value = false;
+  }
 };
 
-const router = useRouter();
-const LoginPage = () => {
+const goToLoginPage = () => {
   router.push('/login');
-}
+};
 
+const formData = {
+  name,
+  password,
+  email,
+  registerUser,
+  goToLoginPage
+};
 </script>
 
 <template>
@@ -30,29 +52,29 @@ const LoginPage = () => {
         <CustomInput
             label="Name:"
             placeholder="Digite seu nome"
-            v-model="name"
+            v-model="formData.name"
             type="text"
         />
         <CustomInput
             label="Email:"
             placeholder="Digite seu email"
-            v-model="email"
+            v-model="formData.email"
             type="email"
         />
         <CustomInput
             label="Senha:"
             placeholder="Digite sua senha"
-            v-model="password"
+            v-model="formData.password"
             type="password"
         />
-        <CustomButton @click="handleButtonClick">
+        <CustomButton>
           <template #button>
-            Cadastrar
+            <span @click="formData.registerUser" :disabled="isRequestPending">Cadastrar</span>
           </template>
           <template #description>
             Já possui uma conta?
           </template>
-          <template #bold><span @click="LoginPage">Fazer Login</span></template>
+          <template #bold><span @click="formData.goToLoginPage">Fazer Login</span></template>
         </CustomButton>
       </div>
     </div>

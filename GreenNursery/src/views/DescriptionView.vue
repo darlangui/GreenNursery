@@ -3,35 +3,66 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import CustomButton from "@/components/icons/ButtonCustom.vue";
 import ButtonWhite from "@/components/icons/ButtonWhite.vue";
+import {onMounted, ref} from "vue";
+import {fetchPlant} from "@/services/plantService";
+import router from "@/router";
 
+const emits = defineEmits(['custom-click']);
+
+const props = defineProps({
+  id: String,
+});
+
+const plant = ref({
+  id: '',
+  content: '',
+  preco: '',
+  imagem: '',
+  desc: '',
+});
+
+onMounted(async () => {
+  try {
+    const fetchedPlant = await fetchPlant(props.id);
+    plant.value = {
+      id: fetchedPlant.id.toString(),
+      content: fetchedPlant.nome,
+      preco: fetchedPlant.preco,
+      imagem: fetchedPlant.imagem,
+      desc: fetchedPlant.desc,
+    };
+  } catch (e) {
+    console.error('Failed to fetch plant data', e);
+  }
+});
 const handleButtonClick = () => {
-  console.log('Botão clicado!');
+  emits('custom-click');
 };
 
 const handleButtonWhiteClick = () => {
-  console.log('Botão white clicado!');
+  emits('custom-click');
+};
+
+const handleButtonClickReturn = () => {
+  router.push('/');
 }
+
 </script>
 <template>
   <Header/>
   <main>
     <section class="information">
-      <div class="goback">
-        <img src="/icons/arrowleft.svg" alt="Arrow Left"/> <span>Voltar para o início</span>
+      <div class="goback" @click="handleButtonClickReturn">
+        <img  src="/icons/arrowleft.svg" alt="Arrow Left"/> <span>Voltar para o início</span>
       </div>
       <div class="panel">
         <section class="image">
-          <img src="/image/plant2.svg" alt="Plant Image"/>
+          <img :src="plant.imagem" alt="Plant Image"/>
         </section>
         <section class="description">
-          <h3>Integer vitae justo</h3>
-          <p>Proin id ligula dictum,
-            convallis enim ut, facilisis massa.
-            Mauris a nisi ut sapien blandit imperdie.
-            Duis ac augue ut lectus congue luctus.
-            Vivamus eu lacus vestibulum, luctus ante
-            dignissim, interdum</p>
-          <span>R$ 0,00</span>
+          <h3>{{ plant.content }}</h3>
+          <p>{{ plant.desc }}</p>
+          <span>R$ {{ plant.preco }}</span>
 
           <ButtonWhite @click="handleButtonWhiteClick">
             <template #button>
