@@ -3,18 +3,56 @@
   import Footer from "@/components/Footer.vue";
   import SelectableDiv from '@/components/icons/SelectableDiv.vue';
   import CardPlant from "@/components/icons/CardPlant.vue";
-  import { ref } from 'vue';
+  import {computed, onMounted, ref} from 'vue';
+  import {fetchAllCategory} from "@/services/categoryService";
+  import {fetchAllPlant} from "@/services/plantService";
 
-  const items = ref([
-    { content: 'Todas' },
-    { content: 'Medicinais' },
-    { content: 'Suculentas' },
-  ]);
+  const items = ref([]);
+  const plantsItems = ref([]);
+  const selectedCategoryId = ref(null);
+
+  onMounted(async () => {
+    try {
+      const categories = await fetchAllCategory();
+      items.value = [
+        { content: 'Todas' },
+        ...categories.map(category => ({
+          content: category.nome,
+          id: category.id,
+        }))
+      ];
+
+      const plants = await fetchAllPlant();
+      plantsItems.value = plants.map(plant => ({
+        id: plant.id.toString(),
+        content: plant.nome,
+        preco: plant.preco,
+        imagem: plant.imagem,
+        desc: plant.desc,
+        category_id: plant.category_id,
+      }));
+    } catch (e) {
+      console.error('Failed to fetch data', e);
+    }
+  });
 
   const selectedItemIndex = ref(0);
 
-  const selectItem = (index) => {
+  const selectItem = (index, categoryId) => {
     selectedItemIndex.value = index;
+    selectedCategoryId.value = categoryId;
+  };
+
+  const filteredPlants = computed(() => {
+    return plantsItems.value.filter(plantMatchesCategory);
+  });
+
+  const plantMatchesCategory = (plant) => {
+    if (!selectedCategoryId.value || selectedCategoryId.value === 'Todas') {
+      return true;
+    } else {
+      return plant.category_id === selectedCategoryId.value;
+    }
   };
 </script>
 
@@ -37,21 +75,23 @@
               v-for="(item, index) in items"
               :key="index"
               :is-selected="selectedItemIndex === index"
-              @toggle-selection="selectItem(index)"
+              @toggle-selection="selectItem(index, item.id)"
           >
             {{ item.content }}
           </SelectableDiv>
         </div>
         <div class="product-list">
           <div class="cards">
-            <CardPlant/>
-            <CardPlant/>
-            <CardPlant/>
-            <CardPlant/>
-            <CardPlant/>
-            <CardPlant/>
-            <CardPlant/>
-            <CardPlant/>
+            <div v-for="(plant, index) in filteredPlants" :key="index">
+            <CardPlant :imagem="plant.imagem" :id="plant.id">
+              <template #nome>
+                {{ plant.content }}
+              </template>
+              <template #preco>
+                {{ plant.preco }}
+              </template>
+            </CardPlant>
+          </div>
           </div>
         </div>
       </section>
@@ -158,7 +198,7 @@
   .cards {
     width: 1152px;
     display: flex;
-    justify-content: space-between;
+    gap:40px;
     flex-wrap: wrap;
   }
 

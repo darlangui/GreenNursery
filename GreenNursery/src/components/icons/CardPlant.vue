@@ -1,18 +1,30 @@
 <script setup>
+import { useRouter } from 'vue-router';
+
+const props = defineProps({
+  imagem: String,
+  id: String,
+});
+
+const router = useRouter();
+
+const redirectToDescription = () => {
+  router.push({ name: 'description', params: { id: props.id } });
+};
 </script>
 
 <template>
   <div class="card">
-    <div class="image">
-      <img src="/image/plant1.svg" alt="Plant Image"/>
+    <div class="image" @click="redirectToDescription">
+      <img :src="imagem" alt="Plant Image"/>
     </div>
     <div class="description">
       <div class="name">
-        <span>Integer vitae justo</span>
+        <span @click="redirectToDescription"><slot name="nome"></slot></span>
       </div>
       <div class="priceadd">
-        <span>R$ 0,00</span>
-        <img src="/icons/add-button.svg" alt="Additional">
+        <span>R$ <slot name="preco"></slot></span>
+        <img src="/icons/add-button.svg" alt="Additional" @click="redirectToDescription">
       </div>
     </div>
   </div>
