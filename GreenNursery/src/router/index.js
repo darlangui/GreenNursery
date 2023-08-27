@@ -12,7 +12,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      props: true
     },
     {
       path: '/login',
@@ -25,19 +26,22 @@ const router = createRouter({
       component: RegisterView
     },
     {
-      path: '/description',
+      path: '/description:id',
       name: 'description',
-      component: DescriptionView
+      component: DescriptionView,
+      props: true
     },
     {
       path: '/cart',
       name: 'cart',
-      component: CartView
+      component: CartView,
+      props: true
     },
     {
       path: '/checkout',
       name: 'checkout',
-      component: CheckoutView
+      component: CheckoutView,
+      props: true
     },
   ]
 })
