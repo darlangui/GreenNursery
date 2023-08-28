@@ -26,14 +26,14 @@ O objetivo principal deste projeto é proporcionar uma oportunidade de aprendiza
 ### Siga os passos abaixo para configurar e executar o projeto localmente para fins de estudo:
 Front-end (Vue.js)
 
-    - Navegue até o diretório do front-end: cd frontend
+    - Navegue até o diretório do front-end: cd greennursery
     - Instale as dependências: npm install
     - Inicie o servidor de desenvolvimento: npm run serve
     - Acesse o front-end no seu navegador: http://localhost:8080
 
 ### Back-end (Laravel)
 
-    - Navegue até o diretório do back-end: cd backend
+    - Navegue até o diretório do back-end: cd api
     - Instale as dependências: composer install
     - Crie um arquivo de ambiente: cp .env.example .env
     - Configure o arquivo .env com as informações do banco de dados e outras configurações relevantes
