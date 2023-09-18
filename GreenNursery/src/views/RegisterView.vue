@@ -1,7 +1,7 @@
 <script setup>
 import LoginHeader from "@/components/LoginHeader.vue";
-import Footer from "@/components/Footer.vue";
-import CustomInput from '@/components/icons/Input.vue';
+import Footer from "@/components/FooterComponent.vue";
+import CustomInput from "@/components/icons/InputComponent.vue";
 import CustomButton from '@/components/icons/ButtonCustom.vue';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
@@ -83,26 +83,27 @@ const formData = {
 </template>
 
 <style scoped>
-main{
-  height: 830px;
-  width: 100%;
+  main {
+    width: 100%;
+    height: calc(100vh - 80px - 102px);
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.register {
-  width: 344px;
-  height: 441px;
-}
+  .register {
+    width: 100%;
+    max-width: 344px;
+  }
 
-h1 {
-  font-size: 32px;
-  font-weight: 500;
-}
+  h1 {
+    color: var(--black);
+    font-size: 32px;
+    line-height: 120%;
+  }
 
-.information{
-  margin-top: 48px;
-}
+  .information{
+    margin-top: 48px;
+  }
 </style>

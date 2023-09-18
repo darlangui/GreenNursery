@@ -1,38 +1,108 @@
+@import url('./colors.css'); 
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    outline: 0;
-    list-style: none;
-    text-decoration: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: 0;
+  list-style: none;
+  text-decoration: none;
+}
 
-    font-family: "JetBrains Mono", sans-serif;
+body {
+  background-color: var(--white);
+  color: var(--black);
+  font-family: "Inter", sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Poppins", sans-serif;
+  font-weight: medium;
+}
+
+hr {
+  width: 100%;
+  background-color: var(--grayscale-200);
+  height: 1px;
+}
+
+button {
+  width: 100%;
+  padding: 14.5px 40px;
+  border-radius: 8px;
+
+  font-size: 18px;
+  line-height: 150%;
+  font-weight: normal;
+
+  cursor: pointer;
+  transition: 0.3s ease-in;
+}
+
+button.primary {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+button.primary:hover {
+  box-shadow: 0px 4px 16px 0px rgba(3, 7, 18, 0.25);
+}
+
+button.secondary {
+  background-color: var(--white);
+  color: var(--black);
+  border: 1.5px solid var(--black);
+}
+
+button.secondary:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+}
+
+.input-container label {
+  color: var(--Black);
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.input-container input {
+  border-radius: 8px;
+  border: 1px solid var(--grayscale-200);
+  background: var(--white);
+  padding: 12px 16px;
+  color: var(--black);
+  font-size: 16px;
+  line-height: 150%;
+
+  transition: 0.3s ease-in;
+}
+
+.input-container input:hover {
+  border: 1px solid var(--black);
+}
+
+.input-container input::placeholder {
+  color: var(--grayscale-300);
 }
 
 @font-face {
-    font-family: 'JetBrains Mono';
-    src: url("fonts/JetBrainsMono-Regular.ttf") format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Poppins';
+  src: url("fonts/Poppins-Regular.ttf") format('truetype');
+  font-weight: medium;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'JetBrains Mono';
-    src: url("fonts/JetBrainsMono-Bold.ttf") format('truetype');
-    font-weight: bold;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url("fonts/JetBrainsMono-Medium.ttf") format('truetype');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url("fonts/JetBrainsMono-Italic.ttf") format('truetype');
-    font-weight: normal;
-    font-style: italic;
+  font-family: 'Inter';
+  src: url("fonts/Inter-Regular.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

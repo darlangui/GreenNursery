@@ -1,6 +1,4 @@
 <script setup>
-
-import Header from "@/components/Header.vue";
 </script>
 
 <template>
@@ -10,6 +8,8 @@ import Header from "@/components/Header.vue";
 </template>
 
 <style scoped>
+  @import url('../assets/colors.css');
+
   header{
     width: 100%;
     height: 80px;
@@ -18,11 +18,12 @@ import Header from "@/components/Header.vue";
     justify-content: center;
     align-items: center;
 
-    border-bottom: 1px solid #E1E3E5;
+    border-bottom: 1px solid var(--grayscale-200);
   }
 
   h1 {
+    color: var(--black);
     font-size: 18px;
-    font-weight: bold;
+    line-height: 120%;
   }
 </style>

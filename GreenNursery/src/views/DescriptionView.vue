@@ -1,6 +1,6 @@
 <script setup>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+import Header from "@/components/HeaderComponent.vue";
+import Footer from "@/components/FooterComponent.vue";
 import CustomButton from "@/components/icons/ButtonCustom.vue";
 import ButtonWhite from "@/components/icons/ButtonWhite.vue";
 import {onMounted, ref} from "vue";

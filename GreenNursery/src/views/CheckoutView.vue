@@ -1,7 +1,7 @@
 <script setup>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import CustomInput from "@/components/icons/Input.vue";
+import Header from "@/components/HeaderComponent.vue";
+import Footer from "@/components/FooterComponent.vue";
+import CustomInput from "@/components/icons/InputComponent.vue";
 import ButtonCustom from "@/components/icons/ButtonCustom.vue";
 import PaymedItem from "@/components/icons/PaymedItem.vue";
 

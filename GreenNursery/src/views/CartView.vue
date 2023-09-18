@@ -1,6 +1,6 @@
 <script setup>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+import Header from "@/components/HeaderComponent.vue";
+import Footer from "@/components/FooterComponent.vue";
 import CartItem from "@/components/icons/CartItem.vue";
 import ButtonCustom from "@/components/icons/ButtonCustom.vue";
 </script>

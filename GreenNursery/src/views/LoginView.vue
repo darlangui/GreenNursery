@@ -1,69 +1,71 @@
 <script setup>
-import LoginHeader from "@/components/LoginHeader.vue";
-import Footer from "@/components/Footer.vue";
-import CustomInput from '@/components/icons/Input.vue';
-import CustomButton from '@/components/icons/ButtonCustom.vue';
-import {loginClient} from "@/services/clientService";
+  import LoginHeader from "@/components/LoginHeader.vue";
+  import Footer from "@/components/FooterComponent.vue";
+  import CustomInput from '@/components/icons/InputComponent.vue';
+  import CustomButton from '@/components/icons/ButtonCustom.vue';
+  import {loginClient} from "@/services/clientService";
 
-import { ref } from 'vue';
-const password = ref('');
-const email = ref('');
-const showErrorMessage = ref(false);
-import { useRouter } from 'vue-router';
+  import { ref } from 'vue';
+  const password = ref('');
+  const email = ref('');
+  const showErrorMessage = ref(false);
+  import { useRouter } from 'vue-router';
 
-const router = useRouter();
+  const router = useRouter();
 
-const isRequestPending = ref(false);
+  const isRequestPending = ref(false);
 
-const handleLogin = async () => {
-  if (isRequestPending.value) {
-    return;
-  }
+  const handleLogin = async () => {
+    if (isRequestPending.value) {
+      return;
+    }
 
-  isRequestPending.value = true;
+    isRequestPending.value = true;
 
-  try {
-    await loginClient(email.value, password.value);
-    console.log('Loginr bem-sucedido:');
-    localStorage.setItem('isLoggedIn', 'true');
-    await router.push('/');
-  } catch (error) {
-    console.error('Erro ao fazer login:', error);
-    showErrorMessage.value = true;
-  } finally {
-    isRequestPending.value = false;
-  }
-};
+    try {
+      await loginClient(email.value, password.value);
+      console.log('Loginr bem-sucedido:');
+      localStorage.setItem('isLoggedIn', 'true');
+      await router.push('/');
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      showErrorMessage.value = true;
+    } finally {
+      isRequestPending.value = false;
+    }
+  };
 
-const handleRegister = () => {
-  router.push('/register');
-};
+  const handleRegister = () => {
+    router.push('/register');
+  };
 
-const formData = {
-  password,
-  email,
-  handleLogin,
-  handleRegister
-};
+  const formData = {
+    password,
+    email,
+    handleLogin,
+    handleRegister
+  };
 </script>
 
 <template>
   <LoginHeader/>
+  
   <main>
     <div class="login">
       <h1>Bem vindo!</h1>
+
       <div class="information">
         <CustomInput
-            label="Email:"
-            placeholder="Digite seu email"
-            v-model="formData.email"
-            type="email"
+          label="Email:"
+          placeholder="Digite seu email"
+          v-model="formData.email"
+          type="email"
         />
         <CustomInput
-            label="Senha:"
-            placeholder="Digite sua senha"
-            v-model="formData.password"
-            type="password"
+          label="Senha:"
+          placeholder="Digite sua senha"
+          v-model="formData.password"
+          type="password"
         />
         <span v-if="showErrorMessage" class="error-message">Email ou senha incorretos.</span>
         <CustomButton>
@@ -73,7 +75,10 @@ const formData = {
           <template #description>
             Não possui uma conta?
           </template>
-          <template #bold><span @click="formData.handleRegister">Cadastrar-se</span> </template>
+          <template #bold>
+            <span @click="formData.handleRegister">
+              Cadastrar-se</span>
+          </template>
         </CustomButton>
       </div>
     </div>
@@ -82,9 +87,9 @@ const formData = {
 </template>
 
 <style scoped>
-  main{
-    height: 830px;
+  main {
     width: 100%;
+    height: calc(100vh - 80px - 102px);
 
     display: flex;
     justify-content: center;
@@ -92,16 +97,17 @@ const formData = {
   }
 
   .login {
-    width: 344px;
-    height: 441px;
+    width: 100%;
+    max-width: 344px;
   }
 
   h1 {
+    color: var(--black);
     font-size: 32px;
-    font-weight: 500;
+    line-height: 120%;
   }
 
-  .information{
+  .information {
     margin-top: 48px;
   }
 </style>

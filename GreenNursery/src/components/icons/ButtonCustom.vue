@@ -2,45 +2,34 @@
 </script>
 
 <template>
-  <button class="custom-button" @click="$emit('click')">
-    <slot name="button"></slot>
-  </button>
-  <div class="sign">
-    <div class="desc">
-      <slot name="description"></slot>
-    </div>
-    <div class="mark">
-     <slot name="bold"></slot>
+  <div class="container">
+    <button class="custom-button primary" @click="$emit('click')">
+      <slot name="button"></slot>
+    </button>
+    <div class="sign">
+      <div class="desc">
+        <slot name="description"></slot>
+      </div>
+      <div class="mark">
+      <slot name="bold"></slot>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-  .custom-button {
-    height: 56px;
-    width: 100%;
-    background-color: #030712;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-
+  .container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-
-    font-size: 18px;
-    font-weight: 500;
-
+    width: 100%;
+    gap: 32px;
+  }
+  .custom-button {
     margin-top: 48px;
   }
 
   .sign {
-    height: 27px;
-    width: 305px;
-
-    margin-top: 32px;
-
     display: flex;
   }
 
