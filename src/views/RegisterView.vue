@@ -2,7 +2,6 @@
 import LoginHeader from "@/components/LoginHeader.vue";
 import Footer from "@/components/FooterComponent.vue";
 import CustomInput from "@/components/icons/InputComponent.vue";
-import CustomButton from '@/components/icons/ButtonCustom.vue';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import {registerClient} from "@/services/clientService";
@@ -67,15 +66,11 @@ const formData = {
             v-model="formData.password"
             type="password"
         />
-        <CustomButton>
-          <template #button>
-            <span @click="formData.registerUser" :disabled="isRequestPending">Cadastrar</span>
-          </template>
-          <template #description>
-            Já possui uma conta?
-          </template>
-          <template #bold><span @click="formData.goToLoginPage">Fazer Login</span></template>
-        </CustomButton>
+
+        <button @click="formData.registerUser" :disabled="isRequestPending" class="primary">Entrar</button>
+        <span class="create-acc">Não possui uma conta?
+          <strong @click="formData.goToLoginPage">Cadastrar-se</strong>
+        </span>
       </div>
     </div>
   </main>
@@ -83,9 +78,11 @@ const formData = {
 </template>
 
 <style scoped>
+  @import url('../assets/colors.css');
+  
   main {
     width: 100%;
-    height: calc(100vh - 80px - 102px);
+    min-height: calc(100vh - 80px - 102px);
 
     display: flex;
     justify-content: center;
@@ -105,5 +102,17 @@ const formData = {
 
   .information{
     margin-top: 48px;
+  }
+
+  button {
+    margin-top: 64px;
+  }
+
+  .create-acc {
+    display: block;
+    margin-top: 32px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
   }
 </style>

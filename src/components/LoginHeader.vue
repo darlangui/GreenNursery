@@ -10,7 +10,7 @@
 <style scoped>
   @import url('../assets/colors.css');
 
-  header{
+  header {
     width: 100%;
     height: 80px;
 
@@ -18,6 +18,7 @@
     justify-content: center;
     align-items: center;
 
+    background: var(--white);
     border-bottom: 1px solid var(--grayscale-200);
   }
 

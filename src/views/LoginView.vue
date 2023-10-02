@@ -2,8 +2,7 @@
   import LoginHeader from "@/components/LoginHeader.vue";
   import Footer from "@/components/FooterComponent.vue";
   import CustomInput from '@/components/icons/InputComponent.vue';
-  import CustomButton from '@/components/icons/ButtonCustom.vue';
-  import {loginClient} from "@/services/clientService";
+  import { loginClient } from "@/services/clientService";
 
   import { ref } from 'vue';
   const password = ref('');
@@ -68,18 +67,11 @@
           type="password"
         />
         <span v-if="showErrorMessage" class="error-message">Email ou senha incorretos.</span>
-        <CustomButton>
-          <template #button >
-            <span @click="formData.handleLogin" :disabled="isRequestPending">Entrar</span>
-          </template>
-          <template #description>
-            Não possui uma conta?
-          </template>
-          <template #bold>
-            <span @click="formData.handleRegister">
-              Cadastrar-se</span>
-          </template>
-        </CustomButton>
+
+        <button @click="formData.handleLogin" :disabled="isRequestPending" class="primary">Entrar</button>
+        <span class="create-acc">Não possui uma conta?
+          <strong @click="formData.handleRegister">Cadastrar-se</strong>
+        </span>
       </div>
     </div>
   </main>
@@ -87,9 +79,11 @@
 </template>
 
 <style scoped>
+  @import url('../assets/colors.css');
+
   main {
     width: 100%;
-    height: calc(100vh - 80px - 102px);
+    min-height: calc(100vh - 80px - 102px);
 
     display: flex;
     justify-content: center;
@@ -109,5 +103,17 @@
 
   .information {
     margin-top: 48px;
+  }
+
+  button {
+    margin-top: 64px;
+  }
+
+  .create-acc {
+    display: block;
+    margin-top: 32px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
   }
 </style>

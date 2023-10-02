@@ -25,9 +25,6 @@
     width: 100%;
     gap: 32px;
   }
-  .custom-button {
-    margin-top: 48px;
-  }
 
   .sign {
     display: flex;
