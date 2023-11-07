@@ -1,14 +1,8 @@
-import axios from "axios";
-
-const  baseURL = import.meta.env.VITE_API_URL;
-
-const apiService = axios.create({
-    baseURL,
-});
+import apiService from "@/services/apiService";
 
 export const fetchAllPlant = async () => {
     try{
-        const response = await apiService.get("/plant");
+        const response = await apiService.get("/v1/plant");
         return response.data;
     } catch(err){
         console.error('Error:', err)
@@ -18,7 +12,7 @@ export const fetchAllPlant = async () => {
 
 export const fetchPlant = async (id) => {
     try{
-        const response = await apiService.get("/plant/" + id);
+        const response = await apiService.get("/v1/plant/" + id);
         return response.data;
     } catch(err){
         console.error('Error:', err)

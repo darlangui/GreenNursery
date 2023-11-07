@@ -41,17 +41,16 @@ const redirectToDescription = () => {
     width: 100%;
     height: 271px;
 
-    background-color: #F8F8FA;
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: center;
 
     cursor: pointer;
   }
 
   .image img {
-    max-width: 210px;
-    max-height: 228px;
+    max-width: 100%;
+    max-height: 100%;
   }
 
   .description {

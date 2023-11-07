@@ -21,7 +21,7 @@
 
 <style scoped>
   .selectable-div {
-    width: 119px;
+    width: 130px;
     height: 43px;
     background-color: #FFFFFF;
 
@@ -33,6 +33,7 @@
 
     border: 1px solid #030712;
     border-radius: 8px;
+
   }
 
   .selected {

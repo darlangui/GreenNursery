@@ -1,18 +1,11 @@
-import axios from "axios";
-
-const  baseURL = import.meta.env.VITE_API_URL;
-
-const apiService = axios.create({
-    baseURL,
-});
+import apiService from "@/services/apiService";
 
 export const fetchAllCategory = async () => {
     try{
-        const response = await apiService.get("/category");
+        const response = await apiService.get("/v1/category");
         return response.data;
     } catch(err){
         console.error('Error:', err)
         throw err;
     }
 };
-

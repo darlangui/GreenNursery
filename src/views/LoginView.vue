@@ -2,7 +2,7 @@
   import LoginHeader from "@/components/LoginHeader.vue";
   import Footer from "@/components/FooterComponent.vue";
   import CustomInput from '@/components/icons/InputComponent.vue';
-  import { loginClient } from "@/services/clientService";
+  import { loginUser } from "@/services/userService";
 
   import { ref } from 'vue';
   const password = ref('');
@@ -22,7 +22,7 @@
     isRequestPending.value = true;
 
     try {
-      await loginClient(email.value, password.value);
+      await loginUser(email.value, password.value);
       console.log('Loginr bem-sucedido:');
       localStorage.setItem('isLoggedIn', 'true');
       await router.push('/');

@@ -19,10 +19,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 30px;
   }
 
   footer .container {
-    padding: 40px 0px;
+    padding: 40px 0;
 
     display: flex;
     justify-content: space-between;

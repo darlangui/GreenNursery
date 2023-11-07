@@ -4,7 +4,7 @@ import Footer from "@/components/FooterComponent.vue";
 import CustomInput from "@/components/icons/InputComponent.vue";
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-import {registerClient} from "@/services/clientService";
+import { registerUser } from "@/services/userService";
 
 const name = ref('');
 const password = ref('');
@@ -13,14 +13,14 @@ const email = ref('');
 const router = useRouter();
 const isRequestPending = ref(false);
 
-const registerUser = async () => {
+const register = async () => {
   if (isRequestPending.value) {
     return;
   }
 
   isRequestPending.value = true;
   try {
-    await registerClient(name.value, email.value, password.value);
+    await registerUser(name.value, email.value, password.value);
     await router.push('/login');
   } catch (error) {
     console.error('Erro ao registrar cliente:', error);
@@ -37,7 +37,7 @@ const formData = {
   name,
   password,
   email,
-  registerUser,
+  register,
   goToLoginPage
 };
 </script>

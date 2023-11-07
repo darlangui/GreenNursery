@@ -7,36 +7,35 @@
   import {fetchAllCategory} from "@/services/categoryService";
   import {fetchAllPlant} from "@/services/plantService";
 
-  const items = ref([]);
+  const categoriesItems = ref([]);
   const plantsItems = ref([]);
   const selectedCategoryId = ref(null);
+  const selectedItemIndex = ref(0);
 
   onMounted(async () => {
     try {
       const categories = await fetchAllCategory();
-      items.value = [
+      categoriesItems.value = [
         { content: 'Todas' },
-        ...categories.map(category => ({
-          content: category.nome,
+        ...categories.data.map(category => ({
+          content: category.name,
           id: category.id,
         }))
       ];
 
       const plants = await fetchAllPlant();
-      plantsItems.value = plants.map(plant => ({
+      plantsItems.value = plants.data.map(plant => ({
         id: plant.id.toString(),
-        content: plant.nome,
-        preco: plant.preco,
-        imagem: plant.imagem,
-        desc: plant.desc,
+        content: plant.name,
+        preco: plant.value,
+        imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/"+plant.path,
+        desc: plant.description,
         category_id: plant.category_id,
       }));
     } catch (e) {
       console.error('Failed to fetch data', e);
     }
   });
-
-  const selectedItemIndex = ref(0);
 
   const selectItem = (index, categoryId) => {
     selectedItemIndex.value = index;
@@ -58,7 +57,6 @@
 
 <template>
   <Header />
-
     <main>
       <div class="container">
         <section class="herobanner">
@@ -80,7 +78,7 @@
         <section class="product">
           <div class="product-pagination">
             <SelectableDiv
-              v-for="(item, index) in items"
+              v-for="(item, index) in categoriesItems"
               :key="index"
               :is-selected="selectedItemIndex === index"
               @toggle-selection="selectItem(index, item.id)"
