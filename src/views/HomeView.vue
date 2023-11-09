@@ -12,29 +12,44 @@
   const selectedCategoryId = ref(null);
   const selectedItemIndex = ref(0);
 
-  onMounted(async () => {
-    try {
-      const categories = await fetchAllCategory();
-      categoriesItems.value = [
-        { content: 'Todas' },
-        ...categories.data.map(category => ({
-          content: category.name,
-          id: category.id,
-        }))
-      ];
+  const fetchData = async () => {
+    try{
+      const storedCategories = localStorage.getItem('categories');
+      const storedPlants = localStorage.getItem('plants');
 
-      const plants = await fetchAllPlant();
-      plantsItems.value = plants.data.map(plant => ({
-        id: plant.id.toString(),
-        content: plant.name,
-        preco: plant.value,
-        imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/"+plant.path,
-        desc: plant.description,
-        category_id: plant.category_id,
-      }));
-    } catch (e) {
-      console.error('Failed to fetch data', e);
+      if(storedCategories && storedPlants){
+        categoriesItems.value = JSON.parse(storedCategories);
+        plantsItems.value = JSON.parse(storedPlants);
+      }else{
+        const categories = await fetchAllCategory();
+        categoriesItems.value = [
+          {content: 'Todas'},
+            ...categories.data.map(category => ({
+              content: category.name,
+              id: category.id,
+            }))
+        ];
+
+        const plants = await fetchAllPlant();
+        plantsItems.value = plants.data.map(plant => ({
+          id: plant.id.toString(),
+          content: plant.name,
+          preco: plant.value,
+          imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/" + plant.path,
+          desc: plant.description,
+          category_id: plant.category_id,
+        }))
+
+        localStorage.setItem('categories', JSON.stringify(categoriesItems.value));
+        localStorage.setItem('plants', JSON.stringify(plantsItems.value));
+      }
+    }catch (e) {
+      console.error('Failed to fetch data', e)
     }
+  }
+
+  onMounted(() => {
+    fetchData();
   });
 
   const selectItem = (index, categoryId) => {
