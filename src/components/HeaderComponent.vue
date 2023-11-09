@@ -16,7 +16,7 @@
         </template>
         <template v-else>
           <li>
-            <img @click="goToLogin" class="user" src="/icons/user.svg" alt="User" />
+            <img @click="goToLogin" class="user" src="/icons/log-in.svg" alt="User" />
           </li>
         </template>
       </ul>
@@ -26,8 +26,10 @@
 
 <script setup>
   import { useRouter } from 'vue-router';
+  import {ref} from "vue";
 
   const router = useRouter();
+  const isLoggedIn = ref(localStorage.getItem('isLoggedIn') === 'true');
 
   const goToHome = () => {
     router.push('/');
@@ -35,6 +37,8 @@
 
   const goToLogout = () => {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('accessToken')
+    isLoggedIn.value = false;
     router.push('/login');
   }
 

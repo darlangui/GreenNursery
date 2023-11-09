@@ -33,6 +33,8 @@ const goToLoginPage = () => {
   router.push('/login');
 };
 
+
+
 const formData = {
   name,
   password,
@@ -66,10 +68,9 @@ const formData = {
             v-model="formData.password"
             type="password"
         />
-
-        <button @click="formData.registerUser" :disabled="isRequestPending" class="primary">Entrar</button>
-        <span class="create-acc">Não possui uma conta?
-          <strong @click="formData.goToLoginPage">Cadastrar-se</strong>
+        <button @click="formData.register" :disabled="isRequestPending" class="primary">Registrar-se</button>
+        <span class="create-acc">Já possui uma conta?
+          <strong @click="formData.goToLoginPage">Entrar</strong>
         </span>
       </div>
     </div>
@@ -90,6 +91,7 @@ const formData = {
   }
 
   .register {
+    margin-top: 20px;
     width: 100%;
     max-width: 344px;
   }

@@ -50,7 +50,7 @@
           localStorage.setItem('categories', JSON.stringify(categoriesItems.value));
           localStorage.setItem('plants', JSON.stringify(plantsItems.value));
         }
-      }, 5.000);
+      }, 300000);
     } catch (e) {
       console.error('Failed to fetch data', e);
     }

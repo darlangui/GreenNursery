@@ -1,9 +1,16 @@
 <script setup>
+
+import router from "@/router";
+
+const goToHome = () => {
+  router.push('/');
+};
+
 </script>
 
 <template>
   <header>
-    <h1>GreenNursery</h1>
+    <h1 @click="goToHome">GreenNursery</h1>
   </header>
 </template>
 
@@ -26,5 +33,6 @@
     color: var(--black);
     font-size: 18px;
     line-height: 120%;
+    cursor: pointer;
   }
 </style>
