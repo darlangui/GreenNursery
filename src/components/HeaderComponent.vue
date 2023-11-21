@@ -5,9 +5,11 @@
         <h1 @click="goToHome">GreenNursery</h1>
       </div>
       <ul class="icons">
-        <li class="shop">
-          <img src="/icons/shop.svg" alt="Shop" />
-          <span>0</span>
+        <li @click="goToCart" class="shop">
+            <img src="/icons/shop.svg" alt="Shop" />
+            <template v-if="store.products.length > 0">
+              <span>{{ store.products.length }}</span>
+            </template>
         </li>
         <template v-if="isLoggedIn">
           <li>
@@ -26,13 +28,19 @@
 
 <script setup>
   import { useRouter } from 'vue-router';
+  import { cartStore } from "../stores/cart";
   import {ref} from "vue";
 
   const router = useRouter();
+  const store = cartStore();
   const isLoggedIn = ref(localStorage.getItem('isLoggedIn') === 'true');
 
   const goToHome = () => {
     router.push('/');
+  }
+
+  const goToCart = () => {
+    router.push('/cart');
   }
 
   const goToLogout = () => {

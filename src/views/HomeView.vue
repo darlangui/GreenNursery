@@ -23,6 +23,7 @@
       }
 
       setInterval(async () => {
+        console.log('dadad')
         const updatedCategories = await fetchAllCategory();
         const updatedPlants = await fetchAllPlant();
 
@@ -110,10 +111,11 @@
               {{ item.content }}
             </SelectableDiv>
           </div>
+
           <div class="product-list">
             <div class="cards">
               <div v-for="(plant, index) in filteredPlants" :key="index">
-                <CardPlant :imagem="plant.imagem" :id="plant.id">
+                <CardPlant :imagem="plant.imagem" :id="plant.id" :price="plant.preco">
                   <template #nome>
                     {{ plant.content }}
                   </template>
@@ -214,16 +216,15 @@
   }
 
   .product{
-    width: 1440px;
+    width: 100%;
     height: 100%;
   }
 
   .product-pagination {
-    width: 100%;
+    max-width: 1112px;
     height: 100%;
 
     display: flex;
-    padding: 0 120px;
     flex-wrap: wrap;
   }
 

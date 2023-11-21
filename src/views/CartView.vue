@@ -3,6 +3,14 @@ import Header from "@/components/HeaderComponent.vue";
 import Footer from "@/components/FooterComponent.vue";
 import CartItem from "@/components/icons/CartItem.vue";
 import ButtonCustom from "@/components/icons/ButtonCustom.vue";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+
+  const goToHome = () => {
+    router.push('/');
+  }
 </script>
 
 <template>
@@ -10,9 +18,10 @@ import ButtonCustom from "@/components/icons/ButtonCustom.vue";
   <main>
     <div class="main">
       <section class="right">
-        <div class="goback">
-          <img src="/icons/arrowleft.svg" alt="Arrow Left"/> <span>Voltar para o início</span>
-        </div>
+        <a @click="goToHome" class="goback">
+          <img src="/icons/arrowleft.svg" alt="Arrow Left"/>
+          <span>Voltar para o início</span>
+        </a>
         <h2>Sua lista de compras</h2>
         <CartItem>
           <template #image><img src="/image/plant1.svg" alt="Image Plant"></template>

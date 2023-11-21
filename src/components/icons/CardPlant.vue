@@ -1,15 +1,23 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { cartStore } from "../../stores/cart";
 
 const props = defineProps({
   imagem: String,
   id: String,
+  price: Number,
 });
 
 const router = useRouter();
+const store = cartStore();
 
 const redirectToDescription = () => {
   router.push({ name: 'description', params: { id: props.id } });
+};
+
+const addToCart = () => {
+  store.addToCart(props.id, 1, props.price);
+  console.log(store.products);
 };
 </script>
 
@@ -24,7 +32,7 @@ const redirectToDescription = () => {
       </div>
       <div class="priceadd">
         <span>R$ <slot name="preco"></slot></span>
-        <img src="/icons/add-button.svg" alt="Additional" @click="redirectToDescription">
+        <img @click="addToCart" src="/icons/add-button.svg" alt="Additional">
       </div>
     </div>
   </div>
