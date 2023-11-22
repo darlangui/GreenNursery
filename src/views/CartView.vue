@@ -1,12 +1,13 @@
 <script setup>
-import Header from "@/components/HeaderComponent.vue";
-import Footer from "@/components/FooterComponent.vue";
-import CartItem from "@/components/icons/CartItem.vue";
-import ButtonCustom from "@/components/icons/ButtonCustom.vue";
-import { useRouter } from 'vue-router';
+  import Header from "@/components/HeaderComponent.vue";
+  import Footer from "@/components/FooterComponent.vue";
+  import CartItem from "@/components/icons/CartItem.vue";
+  import ButtonCustom from "@/components/icons/ButtonCustom.vue";
+  import { useRouter } from 'vue-router';
+  import { cartStore } from "../stores/cart";
 
-const router = useRouter();
-
+  const router = useRouter();
+  const store = cartStore();
 
   const goToHome = () => {
     router.push('/');
@@ -23,22 +24,28 @@ const router = useRouter();
           <span>Voltar para o início</span>
         </a>
         <h2>Sua lista de compras</h2>
-        <CartItem>
-          <template #image><img src="/image/plant1.svg" alt="Image Plant"></template>
-          <template #name>Integer vitae justo</template>
-          <template #mount>1</template>
-          <template #value>0,00</template>
-        </CartItem>
+        <div class="listCart" v-for="(product, id) in store.products" :key="id">
+          <CartItem :id="product.id" :price="product.price" :name="product.name" :image="product.image">
+            <template #image>
+              <img :src="product.image" alt="imagem">
+            </template>
+            <template #name>{{ product.name }}</template>
+            <template #mount>
+              {{ store.getItemQuantity(product.id) }}
+            </template>
+            <template #value>{{ product.price }}</template>
+          </CartItem>
+        </div>
       </section>
       <section class="left">
         <div class="left-cart">
           <div class="itens">
             <span>Itens:</span>
-            <span>3 itens</span>
+            <span>{{ store.cartQuantity }} itens</span>
           </div>
           <div class="total">
             <p>Total</p>
-            <span>R$ 0,00</span>
+            <span>R$ {{ store.getTotalPrice() }}</span>
           </div>
           <ButtonCustom>
            <template #button>Ir para o Pagamento</template>
@@ -71,7 +78,7 @@ const router = useRouter();
   }
 
   .right {
-    width: 536px;
+    width: 100%;
     height: 100%;
   }
 
@@ -100,9 +107,14 @@ const router = useRouter();
     max-height: 32px;
   }
 
-  .image img{
-    max-width: 124px;
-    max-height: 124px;
+  .image img {
+    width: 152px;
+    height: 152px;
+    border-radius: 8px;
+  }
+
+  .listCart {
+    width: 100%;
   }
 
   .left {

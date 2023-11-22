@@ -7,18 +7,18 @@
       <ul class="icons">
         <li @click="goToCart" class="shop">
             <img src="/icons/shop.svg" alt="Shop" />
-            <template v-if="store.products.length > 0">
-              <span>{{ store.products.length }}</span>
+            <template v-if="store.cartQuantity > 0">
+              <span>{{ store.cartQuantity }}</span>
             </template>
         </li>
         <template v-if="isLoggedIn">
           <li>
-            <img @click="goToLogout" class="user" src="/icons/user.svg" alt="User" />
+            <img @click="goToLogout" class="user" src="/icons/logout.svg" alt="User" />
           </li>
         </template>
         <template v-else>
           <li>
-            <img @click="goToLogin" class="user" src="/icons/log-in.svg" alt="User" />
+            <img @click="goToLogin" class="user" src="/icons/user.svg" alt="User" />
           </li>
         </template>
       </ul>
@@ -47,7 +47,6 @@
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('accessToken')
     isLoggedIn.value = false;
-    router.push('/login');
   }
 
   const goToLogin = () => {
@@ -90,7 +89,7 @@
   .icons {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 24px;
   }
 
   .icons li {

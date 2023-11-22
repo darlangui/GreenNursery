@@ -22,36 +22,33 @@
         plantsItems.value = JSON.parse(storedPlants);
       }
 
-      setInterval(async () => {
-        console.log('dadad')
-        const updatedCategories = await fetchAllCategory();
-        const updatedPlants = await fetchAllPlant();
+      const updatedCategories = await fetchAllCategory();
+      const updatedPlants = await fetchAllPlant();
 
-        if (
-            JSON.stringify(updatedCategories.data) !== JSON.stringify(categoriesItems.value) ||
-            JSON.stringify(updatedPlants.data) !== JSON.stringify(plantsItems.value)
-        ) {
+      if (
+          JSON.stringify(updatedCategories.data) !== JSON.stringify(categoriesItems.value) ||
+          JSON.stringify(updatedPlants.data) !== JSON.stringify(plantsItems.value)
+      ) {
 
-          categoriesItems.value = [
-            {content: 'Todas'},
-            ...updatedCategories.data.map(category => ({
-              content: category.name,
-              id: category.id,
-            }))
-          ];
-          plantsItems.value = updatedPlants.data.map(plant => ({
-            id: plant.id.toString(),
-            content: plant.name,
-            preco: plant.value,
-            imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/" + plant.path,
-            desc: plant.description,
-            category_id: plant.category_id,
-          }));
+        categoriesItems.value = [
+          {content: 'Todas'},
+          ...updatedCategories.data.map(category => ({
+            content: category.name,
+            id: category.id,
+          }))
+        ];
+        plantsItems.value = updatedPlants.data.map(plant => ({
+          id: plant.id.toString(),
+          content: plant.name,
+          preco: plant.value,
+          imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/" + plant.path,
+          desc: plant.description,
+          category_id: plant.category_id,
+        }));
 
-          localStorage.setItem('categories', JSON.stringify(categoriesItems.value));
-          localStorage.setItem('plants', JSON.stringify(plantsItems.value));
-        }
-      }, 300000);
+        localStorage.setItem('categories', JSON.stringify(categoriesItems.value));
+        localStorage.setItem('plants', JSON.stringify(plantsItems.value));
+      }
     } catch (e) {
       console.error('Failed to fetch data', e);
     }
@@ -115,7 +112,7 @@
           <div class="product-list">
             <div class="cards">
               <div v-for="(plant, index) in filteredPlants" :key="index">
-                <CardPlant :imagem="plant.imagem" :id="plant.id" :price="plant.preco">
+                <CardPlant :image="plant.imagem" :id="plant.id" :price="plant.preco" :name="plant.content">
                   <template #nome>
                     {{ plant.content }}
                   </template>
@@ -216,6 +213,7 @@
   }
 
   .product{
+    padding-top: 88px;
     width: 100%;
     height: 100%;
   }
@@ -237,7 +235,8 @@
     margin-right: 0;
   }
 
-  .product-list{
+  .product-list {
+    padding-bottom: 104px;
     width: 100%;
     display: flex;
     justify-content: center;
