@@ -2,15 +2,13 @@ import { defineStore } from 'pinia'
 
 export const cartStore = defineStore('cart', {
   state: () => ({
-    products: [],
-    cartQuantity: 0
+    products: []
   }),
 
   actions: {
     addToCart({ id, price, image, name }) {
       if (this.products.find((product) => product.id === id) == null) {
         this.products.push({ id, quantity: 1, price, image, name })
-        this.cartQuantity++
       } else {
         const newProducts = []
 
@@ -22,7 +20,6 @@ export const cartStore = defineStore('cart', {
           }
         })
 
-        this.cartQuantity++
         this.products = newProducts
       }
 
@@ -36,10 +33,6 @@ export const cartStore = defineStore('cart', {
       }, 0)
     },
 
-    resetCart() {
-      this.products = []
-    },
-
     removeFromCart(id) {
       if (this.products.find((item) => item.id === id)?.quantity === 1) {
         this.products.map((item) => {
@@ -47,20 +40,21 @@ export const cartStore = defineStore('cart', {
             this.products.splice(item, 1)
           }
         })
-        this.cartQuantity--
       } else {
         this.products.map((item) => {
           if (item.id === id) {
             item.quantity--
           }
         })
-
-        this.cartQuantity--
       }
     },
 
     getItemQuantity(id) {
       return this.products.find((item) => item.id === id)?.quantity || 0
+    },
+
+    cartQuantity() {
+      return this.products.reduce((quantity, item) => item.quantity + quantity, 0)
     }
   }
 })

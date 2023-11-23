@@ -7,8 +7,8 @@
       <ul class="icons">
         <li @click="goToCart" class="shop">
             <img src="/icons/shop.svg" alt="Shop" />
-            <template v-if="store.cartQuantity > 0">
-              <span>{{ store.cartQuantity }}</span>
+            <template v-if="store.cartQuantity() > 0">
+              <span>{{ store.cartQuantity() }}</span>
             </template>
         </li>
         <template v-if="isLoggedIn">

@@ -41,7 +41,7 @@
         <div class="left-cart">
           <div class="itens">
             <span>Itens:</span>
-            <span>{{ store.cartQuantity }} itens</span>
+            <span>{{ store.cartQuantity() }} itens</span>
           </div>
           <div class="total">
             <p>Total</p>

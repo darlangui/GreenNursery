@@ -4,8 +4,10 @@ import Footer from "@/components/FooterComponent.vue";
 import {onMounted, ref} from "vue";
 import {fetchPlant} from "@/services/plantService";
 import router from "@/router";
+import { cartStore } from "../stores/cart";
 
 const emits = defineEmits(['custom-click']);
+const store = cartStore();
 
 const props = defineProps({
   id: String,
@@ -40,10 +42,24 @@ onMounted(async () => {
 
 const handleBuyNow = () => {
   emits('custom-click');
+  store.products = []
+  store.addToCart({
+    id: plant.value.id,
+    name: plant.value.content,
+    price: plant.value.preco,
+    image: plant.value.imagem,
+  });
 };
 
 const handleAddToCart = () => {
   emits('custom-click');
+  store.addToCart({
+    id: plant.value.id,
+    name: plant.value.content,
+    price: plant.value.preco,
+    image: plant.value.imagem,
+  });
+  router.push('/cart');
 };
 
 const handleButtonClickReturn = () => {
