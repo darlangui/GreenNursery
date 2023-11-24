@@ -8,7 +8,7 @@
       type: String,
       default: 'text'
     },
-    modelValue: String
+    modelValue: Object
   });
 
   const inputValue = ref(props.modelValue);

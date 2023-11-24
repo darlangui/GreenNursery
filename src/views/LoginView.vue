@@ -23,8 +23,8 @@
 
     try {
       await loginUser(email.value, password.value);
-      console.log('Loginr bem-sucedido:');
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', email.value);
       await router.push('/');
     } catch (error) {
       console.error('Erro ao fazer login:', error);

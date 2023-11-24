@@ -1,27 +1,45 @@
 <script setup>
+  import { cartStore } from "../../stores/cart";
+  
+  const store = cartStore()
 
+  const props = defineProps({
+    id: String,
+    name: String,
+    image: String,
+    price: Number,
+  });
+
+  const reduceItemToCart = () => {
+    store.removeFromCart(props.id)
+  }
+
+  const addItemToCart = () => {
+    store.addToCart(props)
+  }
 </script>
 
 <template>
   <div class="cart">
     <div class="image">
-      <slot name="image"></slot>
+      <slot name="image">
+      </slot>
     </div>
     <div class="information">
       <p><slot name="name"></slot></p>
       <div class="add">
-        <img src="/icons/removeicon.svg" alt="Remove Icon">
-        <span><slot name="mount"></slot> Unidade/s</span>
-        <img src="/icons/addicon.svg" alt="Add Icon">
+        <img @click="reduceItemToCart" src="/icons/removeicon.svg" alt="Remove Icon">
+        <span><slot name="mount"></slot> Unidades</span>
+        <img @click="addItemToCart" src="/icons/addicon.svg" alt="Add Icon">
       </div>
-      <span>R$ <slot name="value"></slot></span>
+      <span><slot name="value"></slot></span>
     </div>
   </div>
 </template>
 
 <style scoped>
   .cart {
-    max-width: 536px;
+    width: 100%;
     height: 152px;
 
     display: flex;
@@ -37,10 +55,18 @@
     display: flex;
     justify-content: center;
     align-items: end;
+    
+    border-radius: 8px;
+  }
+
+  .image img {
+    width: 152px;
+    height: 152px;
+    border-radius: 8px;
   }
 
   .information{
-    max-width: 360px;
+    width: 100%;
     max-height: 125px;
     margin-left: 24px;
     display: flex;

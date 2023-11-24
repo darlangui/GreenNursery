@@ -1,30 +1,39 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { cartStore } from "../../stores/cart";
 
 const props = defineProps({
-  imagem: String,
   id: String,
+  name: String,
+  image: String,
+  price: Number,
 });
 
 const router = useRouter();
+const store = cartStore();
 
 const redirectToDescription = () => {
   router.push({ name: 'description', params: { id: props.id } });
+};
+
+const addToCart = () => {
+  store.addToCart(props)
+  console.log(props)
 };
 </script>
 
 <template>
   <div class="card">
     <div class="image" @click="redirectToDescription">
-      <img :src="imagem" alt="Plant Image"/>
+      <img :src="image" alt="Plant Image"/>
     </div>
     <div class="description">
       <div class="name">
         <span @click="redirectToDescription"><slot name="nome"></slot></span>
       </div>
       <div class="priceadd">
-        <span>R$ <slot name="preco"></slot></span>
-        <img src="/icons/add-button.svg" alt="Additional" @click="redirectToDescription">
+        <span><slot name="preco"></slot></span>
+        <img @click="addToCart" src="/icons/add-button.svg" alt="Additional">
       </div>
     </div>
   </div>
@@ -33,7 +42,6 @@ const redirectToDescription = () => {
 <style scoped>
   .card {
     width: 248px;
-    height: 351px;
     margin-top: 64px;
   }
 
@@ -61,6 +69,7 @@ const redirectToDescription = () => {
 
   .name {
     color: #475569;
+    height: 39px;
     font-size: 16px;
     cursor: pointer;
   }
@@ -73,7 +82,6 @@ const redirectToDescription = () => {
 
   .priceadd span{
     color: #030712;
-    text-style: bold;
     font-size: 24px;
   }
 

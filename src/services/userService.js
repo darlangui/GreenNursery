@@ -1,4 +1,4 @@
-import apiService from "@/services/apiService";
+import apiService, {setAuthToken} from "@/services/apiService";
 
 export const registerUser = async (name, email, password) => {
     try {
@@ -19,7 +19,10 @@ export const loginUser = async (email, password) => {
         const response = await apiService.post("/auth/login", {
             email: email,
             password: password,
-        });
+        })
+        const token = response.data.access_token;
+        localStorage.setItem("accessToken", token);
+        setAuthToken(token);
         return response.data;
     } catch (err) {
         console.error('Error:', err);

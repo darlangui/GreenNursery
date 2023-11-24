@@ -4,8 +4,10 @@ import Footer from "@/components/FooterComponent.vue";
 import {onMounted, ref} from "vue";
 import {fetchPlant} from "@/services/plantService";
 import router from "@/router";
+import { cartStore } from "../stores/cart";
 
 const emits = defineEmits(['custom-click']);
+const store = cartStore();
 
 const props = defineProps({
   id: String,
@@ -22,13 +24,17 @@ const plant = ref({
 onMounted(async () => {
   try {
     const fetchedPlant = await fetchPlant(props.id);
-    plant.value = {
-      id: fetchedPlant.id.toString(),
-      content: fetchedPlant.nome,
-      preco: fetchedPlant.preco,
-      imagem: fetchedPlant.imagem,
-      desc: fetchedPlant.desc,
-    };
+    if (fetchedPlant && fetchedPlant.data && fetchedPlant.data.id) {
+      plant.value = {
+        id: fetchedPlant.data.id.toString(),
+        content: fetchedPlant.data.name,
+        preco: fetchedPlant.data.value,
+        imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/" + fetchedPlant.data.path,
+        desc: fetchedPlant.data.description,
+      };
+    } else {
+      console.error('Plant data or ID is undefined');
+    }
   } catch (e) {
     console.error('Failed to fetch plant data', e);
   }
@@ -36,10 +42,25 @@ onMounted(async () => {
 
 const handleBuyNow = () => {
   emits('custom-click');
+  store.products = []
+  store.addToCart({
+    id: plant.value.id,
+    name: plant.value.content,
+    price: plant.value.preco,
+    image: plant.value.imagem,
+  });
+  router.push('/checkout');
 };
 
 const handleAddToCart = () => {
   emits('custom-click');
+  store.addToCart({
+    id: plant.value.id,
+    name: plant.value.content,
+    price: plant.value.preco,
+    image: plant.value.imagem,
+  });
+  router.push('/cart');
 };
 
 const handleButtonClickReturn = () => {
@@ -49,7 +70,7 @@ const handleButtonClickReturn = () => {
 </script>
 <template>
   <Header/>
-
+  
   <main>
     <div class="main-container">
       <section class="information">
@@ -64,8 +85,8 @@ const handleButtonClickReturn = () => {
           </section>
           
           <section class="description">
-            <h3>{{ plant.content }} Integer vitae justo</h3>
-            <p>{{ plant.desc }} Proin id ligula dictum, convallis enim ut, facilisis massa. Mauris a nisi ut sapien blandit imperdie. Duis ac augue ut lectus congue luctus. Vivamus eu lacus vestibulum, luctus ante dignissim, interdum </p>
+            <h3>{{ plant.content }}</h3>
+            <p>{{ plant.desc }}</p>
             <span>R$ {{ plant.preco }}</span>
 
             <button @click="handleAddToCart" class="secondary">Adicionar ao carrinho</button>

@@ -6,36 +6,59 @@
   import {computed, onMounted, ref} from 'vue';
   import {fetchAllCategory} from "@/services/categoryService";
   import {fetchAllPlant} from "@/services/plantService";
+  import { convertToCurrecy } from '../utils/convertToCurrency';
 
   const categoriesItems = ref([]);
   const plantsItems = ref([]);
   const selectedCategoryId = ref(null);
   const selectedItemIndex = ref(0);
 
-  onMounted(async () => {
+  const fetchData = async () => {
     try {
-      const categories = await fetchAllCategory();
-      categoriesItems.value = [
-        { content: 'Todas' },
-        ...categories.data.map(category => ({
-          content: category.name,
-          id: category.id,
-        }))
-      ];
+      const storedCategories = localStorage.getItem('categories');
+      const storedPlants = localStorage.getItem('plants');
 
-      const plants = await fetchAllPlant();
-      plantsItems.value = plants.data.map(plant => ({
-        id: plant.id.toString(),
-        content: plant.name,
-        preco: plant.value,
-        imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/"+plant.path,
-        desc: plant.description,
-        category_id: plant.category_id,
-      }));
+      if (storedCategories && storedPlants) {
+        categoriesItems.value = JSON.parse(storedCategories);
+        plantsItems.value = JSON.parse(storedPlants);
+      }
+
+      const updatedCategories = await fetchAllCategory();
+      const updatedPlants = await fetchAllPlant();
+
+      if (
+          JSON.stringify(updatedCategories.data) !== JSON.stringify(categoriesItems.value) ||
+          JSON.stringify(updatedPlants.data) !== JSON.stringify(plantsItems.value)
+      ) {
+
+        categoriesItems.value = [
+          {content: 'Todas'},
+          ...updatedCategories.data.map(category => ({
+            content: category.name,
+            id: category.id,
+          }))
+        ];
+        plantsItems.value = updatedPlants.data.map(plant => ({
+          id: plant.id.toString(),
+          content: plant.name,
+          preco: plant.value,
+          imagem: "https://api.darlanguimaraes.com/public/api/v1/plants/" + plant.path,
+          desc: plant.description,
+          category_id: plant.category_id,
+        }));
+
+        localStorage.setItem('categories', JSON.stringify(categoriesItems.value));
+        localStorage.setItem('plants', JSON.stringify(plantsItems.value));
+      }
     } catch (e) {
       console.error('Failed to fetch data', e);
     }
+  };
+
+  onMounted(() => {
+    fetchData();
   });
+
 
   const selectItem = (index, categoryId) => {
     selectedItemIndex.value = index;
@@ -86,15 +109,16 @@
               {{ item.content }}
             </SelectableDiv>
           </div>
+
           <div class="product-list">
             <div class="cards">
               <div v-for="(plant, index) in filteredPlants" :key="index">
-                <CardPlant :imagem="plant.imagem" :id="plant.id">
+                <CardPlant :image="plant.imagem" :id="plant.id" :price="plant.preco" :name="plant.content">
                   <template #nome>
                     {{ plant.content }}
                   </template>
                   <template #preco>
-                    {{ plant.preco }}
+                    {{ convertToCurrecy(plant.preco) }}
                   </template>
                 </CardPlant>
               </div>
@@ -190,16 +214,16 @@
   }
 
   .product{
-    width: 1440px;
+    padding-top: 88px;
+    width: 100%;
     height: 100%;
   }
 
   .product-pagination {
-    width: 100%;
+    max-width: 1112px;
     height: 100%;
 
     display: flex;
-    padding: 0 120px;
     flex-wrap: wrap;
   }
 
@@ -212,7 +236,8 @@
     margin-right: 0;
   }
 
-  .product-list{
+  .product-list {
+    padding-bottom: 104px;
     width: 100%;
     display: flex;
     justify-content: center;
