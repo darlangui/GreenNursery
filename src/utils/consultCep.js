@@ -1,10 +1,8 @@
 import axios from 'axios'
 
-export const consultCep = async () => {
+export const consultCep = async (cep) => {
   try {
-    return await axios.get(
-      'https://h-apigateway.conectagov.estaleiro.serpro.gov.br/api-cep/v1/consulta/cep/98400000'
-    )
+    return await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
   } catch (error) {
     console.error('Error:', error)
     throw error

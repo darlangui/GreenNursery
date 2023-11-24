@@ -1,6 +1,7 @@
 <script setup>
 import Header from "@/components/HeaderComponent.vue";
 import apiService from "@/services/apiService";
+import { consultCep } from '../utils/consultCep';
 import Footer from "@/components/FooterComponent.vue";
 import CustomInput from "@/components/icons/InputComponent.vue";
 import PaymedItem from "@/components/icons/PaymedItem.vue";
@@ -12,14 +13,9 @@ const router = useRouter();
 const store = cartStore();
 
 import { ref } from 'vue';
-const name = ref('');
-const email = ref('');
-const cpf = ref('');
-const cep = ref('');
-const cidade = ref('');
-const rua = ref('');
-const numero = ref('');
-const bairro = ref('');
+const frete = ref(0);
+const city = ref('');
+let state = "";
 
 const items = ref([
   { content: 'Cartão de crédito' },
@@ -34,6 +30,18 @@ const selectItem = (index) => {
   selectedItemIndex.value = index;
 };
 
+const getCityFromCep = async (e) => {
+  if (e.target.value.length === 8) {
+    const { data } = await consultCep(e.target.value);
+    state = data.uf;
+    city.value = data.localidade
+
+    const response = await apiService.get('/v1/freight');
+    let stateFinded = response.data.data.find((item) => item.state === state);
+    frete.value = stateFinded.value
+  }
+}
+
 const handlePay = async () => {
   const accessToken = localStorage.getItem('accessToken');
   const userEmail = localStorage.getItem('userEmail');
@@ -43,7 +51,7 @@ const handlePay = async () => {
       await apiService.post('/v1/purshese', {
         client_email: userEmail,
         plant_name: store.products[index].name,
-        freight_state: "Rio Grande do Sul",
+        freight_state: state,
         status: "process",
         mount: store.getItemQuantity(store.products[index].id)
       }, {
@@ -89,18 +97,26 @@ const handlePay = async () => {
         </div>
         <div class="card">
           <h1>Endereço de envio</h1>
-          <CustomInput
-              label="CEP"
-              placeholder="00000-00"
-              v-model="cep"
-              type="text"
-          />
-          <CustomInput
-              label="Cidade"
-              placeholder="Cidade"
-              v-model="cidade"
-              type="text"
-          />
+          <div class="input-container">
+            <label for="">CEP</label>
+            <Input
+                label="CEP"
+                placeholder="00000-000"
+                v-model="cep"
+                type="text"
+                @input="getCityFromCep"
+            />
+          </div>
+          <div class="input-container">
+            <label for="">Cidade</label>
+            <Input
+                placeholder="Cidade"
+                v-model="city"
+                type="text"
+                :value="city"
+                disabled
+            />
+          </div>
           <CustomInput
               label="Rua ou logradouro"
               placeholder="Rua ou logradouro"
@@ -134,11 +150,11 @@ const handlePay = async () => {
             <p>Subtotal</p><h1>{{ convertToCurrecy(store.getTotalPrice()) }}</h1>
           </div>
           <div class="total">
-            <p>Frete:</p><h1>R$ 30,00</h1>
+            <p>Frete:</p><h1>{{ convertToCurrecy(frete) }}</h1>
           </div>
           <div class="row"></div>
           <div class="totaled">
-            <p>Total:</p><h1>{{ convertToCurrecy(store.getTotalPrice() + 30) }}</h1>
+            <p>Total:</p><h1>{{ convertToCurrecy(store.getTotalPrice() + frete) }}</h1>
           </div>
           <button class="primary" @click="handlePay">Confirmar</button>
         </div>
@@ -255,6 +271,10 @@ const handlePay = async () => {
   .totaled span {
     font-size: 18px;
     font-weight: 200;
+  }
+
+  .input-container {
+    margin-bottom: 16px;
   }
 
 </style>
