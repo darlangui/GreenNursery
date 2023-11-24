@@ -8,11 +8,11 @@ import PaymedItem from "@/components/icons/PaymedItem.vue";
 import { useRouter } from "vue-router";
 import { cartStore } from '../stores/cart';
 import { convertToCurrecy } from '../utils/convertToCurrency';
+import { ref } from 'vue';
 
 const router = useRouter();
 const store = cartStore();
 
-import { ref } from 'vue';
 const frete = ref(0);
 const city = ref('');
 let state = "";
@@ -43,26 +43,30 @@ const getCityFromCep = async (e) => {
 }
 
 const handlePay = async () => {
-  const accessToken = localStorage.getItem('accessToken');
-  const userEmail = localStorage.getItem('userEmail');
+  if(!localStorage.getItem('accessToken')){
+    router.push('login');
+  }else{
+    const accessToken = localStorage.getItem('accessToken');
+    const userEmail = localStorage.getItem('userEmail');
 
-  for (let index = 0; index < store.products.length; index++) {
-    try {
-      await apiService.post('/v1/purshese', {
-        client_email: userEmail,
-        plant_name: store.products[index].name,
-        freight_state: state,
-        status: "process",
-        mount: store.getItemQuantity(store.products[index].id)
-      }, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
+    for (let index = 0; index < store.products.length; index++) {
+      try {
+        await apiService.post('/v1/purshese', {
+          client_email: userEmail,
+          plant_name: store.products[index].name,
+          freight_state: state,
+          status: "process",
+          mount: store.getItemQuantity(store.products[index].id)
+        }, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
 
-      store.products = []
-      router.push('/');
-    } catch (error) {
-      console.error('Error:', error)
-      throw error;
+        store.products = []
+        router.push('/');
+      } catch (error) {
+        console.error('Error:', error)
+        throw error;
+      }
     }
   }
 }
