@@ -23,9 +23,8 @@
 
     try {
       await loginUser(email.value, password.value);
-      console.log('Login bem-sucedido:');
-      console.log(localStorage.getItem('accessToken'))
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', email.value);
       await router.push('/');
     } catch (error) {
       console.error('Erro ao fazer login:', error);

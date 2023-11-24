@@ -32,7 +32,7 @@
         <span><slot name="mount"></slot> Unidades</span>
         <img @click="addItemToCart" src="/icons/addicon.svg" alt="Add Icon">
       </div>
-      <span>R$ <slot name="value"></slot></span>
+      <span><slot name="value"></slot></span>
     </div>
   </div>
 </template>

@@ -6,6 +6,7 @@
   import {computed, onMounted, ref} from 'vue';
   import {fetchAllCategory} from "@/services/categoryService";
   import {fetchAllPlant} from "@/services/plantService";
+  import { convertToCurrecy } from '../utils/convertToCurrency';
 
   const categoriesItems = ref([]);
   const plantsItems = ref([]);
@@ -117,7 +118,7 @@
                     {{ plant.content }}
                   </template>
                   <template #preco>
-                    {{ plant.preco }}
+                    {{ convertToCurrecy(plant.preco) }}
                   </template>
                 </CardPlant>
               </div>

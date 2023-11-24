@@ -5,6 +5,7 @@
   import ButtonCustom from "@/components/icons/ButtonCustom.vue";
   import { useRouter } from 'vue-router';
   import { cartStore } from "../stores/cart";
+  import { convertToCurrecy } from '../utils/convertToCurrency';
 
   const router = useRouter();
   const store = cartStore();
@@ -33,7 +34,7 @@
             <template #mount>
               {{ store.getItemQuantity(product.id) }}
             </template>
-            <template #value>{{ product.price }}</template>
+            <template #value>{{ convertToCurrecy(product.price) }}</template>
           </CartItem>
         </div>
       </section>
@@ -45,9 +46,9 @@
           </div>
           <div class="total">
             <p>Total</p>
-            <span>R$ {{ store.getTotalPrice() }}</span>
+            <span>{{ convertToCurrecy(store.getTotalPrice()) }}</span>
           </div>
-          <ButtonCustom>
+          <ButtonCustom @click="router.push('/checkout')">
            <template #button>Ir para o Pagamento</template>
           </ButtonCustom>
         </div>
@@ -60,7 +61,7 @@
 <style scoped>
   main {
     width: 100%;
-    height: 100%;
+    min-height: calc(100vh - 80px - 102px);
 
     display: flex;
     justify-content: center;

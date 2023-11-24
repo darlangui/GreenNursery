@@ -32,7 +32,7 @@ const addToCart = () => {
         <span @click="redirectToDescription"><slot name="nome"></slot></span>
       </div>
       <div class="priceadd">
-        <span>R$ <slot name="preco"></slot></span>
+        <span><slot name="preco"></slot></span>
         <img @click="addToCart" src="/icons/add-button.svg" alt="Additional">
       </div>
     </div>
@@ -82,7 +82,6 @@ const addToCart = () => {
 
   .priceadd span{
     color: #030712;
-    text-style: bold;
     font-size: 24px;
   }
 

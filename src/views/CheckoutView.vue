@@ -1,19 +1,27 @@
 <script setup>
 import Header from "@/components/HeaderComponent.vue";
+import apiService from "@/services/apiService";
 import Footer from "@/components/FooterComponent.vue";
 import CustomInput from "@/components/icons/InputComponent.vue";
 import ButtonCustom from "@/components/icons/ButtonCustom.vue";
 import PaymedItem from "@/components/icons/PaymedItem.vue";
+import { useRouter } from "vue-router";
+import { cartStore } from '../stores/cart';
+import { convertToCurrecy } from '../utils/convertToCurrency';
+
+const router = useRouter();
+const store = cartStore();
 
 import { ref } from 'vue';
 const name = ref('');
 const email = ref('');
 const cpf = ref('');
-const bairro = ref('');
 const cep = ref('');
 const cidade = ref('');
 const rua = ref('');
 const numero = ref('');
+const bairro = ref('');
+const state = ref('');
 
 const items = ref([
   { content: 'Cartão de crédito' },
@@ -27,14 +35,40 @@ const selectedItemIndex = ref(0);
 const selectItem = (index) => {
   selectedItemIndex.value = index;
 };
+
+const handlePay = async () => {
+  const accessToken = localStorage.getItem('accessToken');
+  const userEmail = localStorage.getItem('userEmail');
+
+  try {
+    await apiService.post('/v1/purshese', {
+      client_email: userEmail,
+      plant_name: store.products[0].name,
+      freight_state: "Rio Grande do Sul",
+      status: "process",
+      mount: store.cartQuantity(),
+      value: store.getTotalPrice()
+    }, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+  } catch (error) {
+    console.error('Error:', error)
+    throw error;
+  }
+
+  console.log(
+    userEmail, accessToken
+  )
+}
 </script>
 
 <template>
   <Header/>
   <main>
     <section class="main">
-      <div class="goback">
-        <img src="/icons/arrowleft.svg" alt="Arrow Left"/> <span>Voltar para o início</span>
+      <div @click="router.push('/')" class="goback">
+        <img src="/icons/arrowleft.svg" alt="Arrow Left"/>
+        <span>Voltar para o início</span>
       </div>
       <div class="cards">
         <div class="card">
@@ -101,17 +135,17 @@ const selectItem = (index) => {
           >
             {{ item.content }}
           </PaymedItem>
-          <div class="total">
-            <p>Subtotal</p><h1>R$ 0,00</h1>
+          <div class="total first">
+            <p>Subtotal</p><h1>{{ convertToCurrecy(store.getTotalPrice()) }}</h1>
           </div>
           <div class="total">
-            <p>Frete:</p><h1>R$ 0,00</h1>
+            <p>Frete:</p><h1>R$ 30,00</h1>
           </div>
           <div class="row"></div>
           <div class="totaled">
-            <p>Total:</p><h1>R$ 0,00</h1>
+            <p>Total:</p><h1>{{ convertToCurrecy(store.getTotalPrice() + 30) }}</h1>
           </div>
-          <ButtonCustom>
+          <ButtonCustom @click="handlePay">
             <template #button>Confirmar</template>
           </ButtonCustom>
         </div>
@@ -192,6 +226,14 @@ const selectItem = (index) => {
     display: flex;
     justify-content: space-between;
   }
+  
+  .total.first {
+    margin-top: 32px;
+  }
+
+  .total .first {
+    margin-top: 32px;
+  }
 
   .total h1{
     font-size: 18px;
@@ -205,14 +247,16 @@ const selectItem = (index) => {
 
   .totaled {
     width: 100%;
-    height: 22px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    margin-bottom: 32px;
   }
 
   .totaled h1{
     font-size: 24px;
     font-weight: 500;
+    margin-bottom: 0;
   }
 
   .totaled span {

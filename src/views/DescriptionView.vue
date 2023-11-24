@@ -49,6 +49,7 @@ const handleBuyNow = () => {
     price: plant.value.preco,
     image: plant.value.imagem,
   });
+  router.push('/checkout');
 };
 
 const handleAddToCart = () => {
