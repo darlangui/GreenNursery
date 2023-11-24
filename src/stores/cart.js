@@ -53,11 +53,6 @@ export const cartStore = defineStore('cart', {
       return this.products.find((item) => item.id === id)?.quantity || 0
     },
 
-    getItemTotalPrice(id) {
-      const product = this.products.find((item) => item.id === id)
-      return product.price * product.quantity
-    },
-
     cartQuantity() {
       return this.products.reduce((quantity, item) => item.quantity + quantity, 0)
     }

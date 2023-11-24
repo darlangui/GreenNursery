@@ -3,7 +3,6 @@ import Header from "@/components/HeaderComponent.vue";
 import apiService from "@/services/apiService";
 import Footer from "@/components/FooterComponent.vue";
 import CustomInput from "@/components/icons/InputComponent.vue";
-import ButtonCustom from "@/components/icons/ButtonCustom.vue";
 import PaymedItem from "@/components/icons/PaymedItem.vue";
 import { useRouter } from "vue-router";
 import { cartStore } from '../stores/cart';
@@ -21,7 +20,6 @@ const cidade = ref('');
 const rua = ref('');
 const numero = ref('');
 const bairro = ref('');
-const state = ref('');
 
 const items = ref([
   { content: 'Cartão de crédito' },
@@ -40,25 +38,22 @@ const handlePay = async () => {
   const accessToken = localStorage.getItem('accessToken');
   const userEmail = localStorage.getItem('userEmail');
 
-  try {
-    await apiService.post('/v1/purshese', {
-      client_email: userEmail,
-      plant_name: store.products[0].name,
-      freight_state: "Rio Grande do Sul",
-      status: "process",
-      mount: store.cartQuantity(),
-      value: store.getTotalPrice()
-    }, {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-  } catch (error) {
-    console.error('Error:', error)
-    throw error;
+  for (let index = 0; index < store.products.length; index++) {
+    try {
+      await apiService.post('/v1/purshese', {
+        client_email: userEmail,
+        plant_name: store.products[index].name,
+        freight_state: "Rio Grande do Sul",
+        status: "process",
+        mount: store.getItemQuantity(store.products[index].id)
+      }, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+    } catch (error) {
+      console.error('Error:', error)
+      throw error;
+    }
   }
-
-  console.log(
-    userEmail, accessToken
-  )
 }
 </script>
 
@@ -145,9 +140,7 @@ const handlePay = async () => {
           <div class="totaled">
             <p>Total:</p><h1>{{ convertToCurrecy(store.getTotalPrice() + 30) }}</h1>
           </div>
-          <ButtonCustom @click="handlePay">
-            <template #button>Confirmar</template>
-          </ButtonCustom>
+          <button class="primary" @click="handlePay">Confirmar</button>
         </div>
       </div>
     </section>
