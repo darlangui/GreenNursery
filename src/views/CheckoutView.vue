@@ -57,6 +57,9 @@ const handlePay = async () => {
       }, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
+
+      store.products = []
+      router.push('/');
     } catch (error) {
       console.error('Error:', error)
       throw error;
